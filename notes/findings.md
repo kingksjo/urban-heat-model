@@ -31,6 +31,8 @@
 
 **F-01 addendum (2026-11-18 ~05:31 UTC):** after the API recovered, the docs host was still unstable: `docs-api.fortyguard.com/docs/` returned `200` (20.7s, SPA shell only), while `/docs/quickstart`, `/llms.txt`, `/openapi.json` and `api.fortyguard.com/openapi.json` returned `503 text/plain "no healthy upstream"` (Envoy-style proxy message). Unauthenticated GETs failed too, so the cause is server-side. Also observed: intermittent `504` vs `503`, both as `text/plain`. No public OpenAPI spec was reachable.
 
+**F-01 addendum 2 (2026-11-18 ~06:20 UTC):** Even after Test 11 (`POST /v1/env_params`) succeeded (`10.182s` just to return `activity_id`), Test 12 (`POST /v1/heatmap`) hit `504 text/plain "upstream request timeout"` at `17.755s`. The ~15–18s edge gateway timeout appears tight relative to slow submit handlers (10s+) and intermittent backend stalls.
+
 ### F-02: Credential handling inconsistency & raw key echo on `POST /v1/system/fetch-api-key-usage`
 | Field | Details |
 |---|---|
@@ -63,3 +65,36 @@
 | **Impact** | Important for downstream modeling: using `env_params` `heat_index_celsius` against the caller's own `temperature` input would create target leakage or trivial identity if misunderstood; `heatmap` (or provider-sourced `apparent_temperature_celsius`/`wet_bulb_temperature_celsius`) must be inspected first before choosing an ML target. |
 | **Severity** | **Low** (UX/docs clarity) / **High** (for correct ML target selection) |
 | **Recommendation** | Clearly separate `env_params` ("ambient weather/AQI enrichment given a reference temp") from `heatmap` ("FortyGuard LTM temperature grid") in top-level docs, and deprecate `map_type` cleanly in the schema. |
+
+### F-05: REST `POST /v1/env_params` is asynchronous with nested `data.activity_id` (and no initial `status` field)
+| Field | Details |
+|---|---|
+| **Finding** | Unlike MCP (which exposes `env_params` as a direct single-call tool), REST `POST /v1/env_params` runs asynchronously: it returns `HTTP 200` after `10.182s` with `{"data": {"activity_id": "..."}}` and no `status` field; the caller must then poll `GET /v1/status/{activity_id}`, where `status` (`"Completed"`) and `result` are nested under `data`. |
+| **Evidence Status** | **Observed** |
+| **Category** | API Design / REST vs. MCP / Developer Experience |
+| **Evidence** | Test 11 in [api-test-log.md](file:///C:/Users/Kamiye/Desktop/urban-heat%20model/notes/api-test-log.md); [env_params_la_20240715.json](file:///C:/Users/Kamiye/Desktop/urban-heat%20model/data/raw/env_params_la_20240715.json) and [env_params_la_20240715_result.json](file:///C:/Users/Kamiye/Desktop/urban-heat%20model/data/raw/env_params_la_20240715_result.json). |
+| **Impact** | Developers switching between MCP and REST—or writing generic polling clients expecting top-level `activity_id`/`status` fields—must inspect nested `data` keys and handle async polling for REST `env_params` despite its 10s submit latency. |
+| **Severity** | **Medium** |
+| **Recommendation** | Document the exact `{data: {activity_id}}` submit envelope and `{data: {status, result}}` status envelope clearly, and consider returning `202 Accepted` with an initial `status: "processing"` field on REST async submissions. |
+
+### F-06: Inconsistent AQI field naming and `null` greenhouse-gas values in `env_params` output
+| Field | Details |
+|---|---|
+| **Finding** | In the `POST /v1/env_params` result for Downtown Los Angeles (`2024-07-15 14:00`), `locations[0].parameters` mixes two naming conventions (`air_quality:idx`, `air_quality_pm2p5:idx`, `air_quality_pm10:idx`, `air_quality_no2:idx`, `air_quality_o3:idx`, `air_quality_so2:idx` with colons vs. `aqi_us_co` with underscores), differing from the `aqi_us_*` enum names in the MCP `env_params` schema. Additionally, `methane_ppb` and `co2_ppm` both returned `[null]`. |
+| **Evidence Status** | **Observed** |
+| **Category** | Data Quality / Schema Consistency |
+| **Evidence** | [env_params_la_20240715_result.json](file:///C:/Users/Kamiye/Desktop/urban-heat%20model/data/raw/env_params_la_20240715_result.json) vs. `AnalysisField` enum in [mcp_tools.json](file:///C:/Users/Kamiye/Desktop/urban-heat%20model/data/raw/mcp_tools.json). |
+| **Impact** | Downstream pipelines mapping `analysis` request names directly to output keys will fail on all AQI keys except `aqi_us_co`, and ML/analytics code must explicitly guard against `null` values for `methane_ppb`/`co2_ppm`. |
+| **Severity** | **Medium** |
+| **Recommendation** | Align output field names with the documented `analysis` enum (`aqi_us`, `aqi_us_pm25`, etc.) and document expected coverage/nullability for greenhouse-gas parameters. |
+
+### F-07: Strong MCP ergonomics (`structuredContent`, `trace`, cross-interface `activity_id`) and intentional GeoJSON omission in `heatmap_read`
+| Field | Details |
+|---|---|
+| **Finding** | MCP `credit_balance` and `heatmap_read` return both text and `structuredContent` alongside a `trace` block (`trace_id`, `plan_type`, `latency_ms`, `cost_credits`), and `heatmap_read` successfully reads an `activity_id` originally created via REST `POST /v1/heatmap` while returning bounded summary statistics (explicit `temperature_unit: "celsius"`, min/max/mean/std) instead of raw GeoJSON polygons. |
+| **Evidence Status** | **Observed** |
+| **Category** | MCP / Strengths / REST-vs-MCP Comparison |
+| **Evidence** | Test 14 in [api-test-log.md](file:///C:/Users/Kamiye/Desktop/urban-heat%20model/notes/api-test-log.md); [mcp_readonly_check.json](file:///C:/Users/Kamiye/Desktop/urban-heat%20model/data/raw/mcp_readonly_check.json) vs. [heatmap_la_20240715.json](file:///C:/Users/Kamiye/Desktop/urban-heat%20model/data/raw/heatmap_la_20240715.json). |
+| **Impact** | **Positive for AI agents:** prevents context-window overflow and gives agents transparent credit/latency telemetry and explicit units (`celsius`). **Tradeoff for ML pipelines:** REST `GET /v1/status/{id}` must still be used to extract tile-level GeoJSON geometries and temperatures. |
+| **Severity** | **Low** (Strength / Design Tradeoff) |
+| **Recommendation** | Keep bounded summaries as the default in MCP `heatmap_read`, and document explicitly that REST is required when callers need full per-tile GeoJSON geometries. |

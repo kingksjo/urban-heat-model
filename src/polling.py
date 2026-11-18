@@ -43,7 +43,13 @@ def poll_activity(
 
         status_val = "unknown"
         if isinstance(resp.body, dict):
-            raw_status = resp.body.get("status") or resp.body.get("state")
+            data_obj = resp.body.get("data") if isinstance(resp.body.get("data"), dict) else {}
+            raw_status = (
+                resp.body.get("status")
+                or resp.body.get("state")
+                or data_obj.get("status")
+                or data_obj.get("state")
+            )
             if raw_status is not None:
                 status_val = str(raw_status)
 

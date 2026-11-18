@@ -1,0 +1,22 @@
+{
+  "request": {
+    "latitude": 34.0522,
+    "longitude": -118.2437,
+    "temperature": 30.0,
+    "date_time": {
+      "start_date": "2024-07-15",
+      "start_time": "14:00",
+      "filter_type": 1
+    }
+  },
+  "submit_status": 200,
+  "submit_latency_s": 10.182,
+  "submit_body": {
+    "error": false,
+    "status_code": 200,
+    "message": "Environment Parameters Analysis Submitted Successfully",
+    "data": {
+      "activity_id": "830ebd44-024d-4f37-88a6-20be5801d505"
+    }
+  }
+}

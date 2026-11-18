@@ -1,0 +1,87 @@
+{
+  "error": false,
+  "status_code": 200,
+  "message": "Completed",
+  "data": {
+    "activity_id": "830ebd44-024d-4f37-88a6-20be5801d505",
+    "status": "Completed",
+    "result": {
+      "metadata": {
+        "timezone": "America/Los_Angeles",
+        "timezone_offset_hours": -7,
+        "time_range": {
+          "start": "2024-07-15T14:00:00-07:00",
+          "end": "2024-07-15T14:00:00-07:00",
+          "interval": "1h",
+          "count": 1
+        },
+        "timestamps": [
+          "2024-07-15T14:00:00-07:00"
+        ]
+      },
+      "locations": [
+        {
+          "lat": 34.0522,
+          "lon": -118.2437,
+          "elevation": 91.0,
+          "temperature": 30.0,
+          "parameters": {
+            "heat_index_celsius": [
+              30.0
+            ],
+            "apparent_temperature_celsius": [
+              29.9
+            ],
+            "relative_humidity_percent": [
+              42.6
+            ],
+            "precipitation_mm": [
+              0.0
+            ],
+            "cloud_cover_octas": [
+              0
+            ],
+            "wet_bulb_temperature_celsius": [
+              20.3
+            ],
+            "air_quality:idx": [
+              62.2
+            ],
+            "air_quality_pm2p5:idx": [
+              62.2
+            ],
+            "air_quality_pm10:idx": [
+              23.7
+            ],
+            "air_quality_no2:idx": [
+              3.5
+            ],
+            "aqi_us_co": [
+              1.5
+            ],
+            "air_quality_o3:idx": [
+              32.9
+            ],
+            "air_quality_so2:idx": [
+              4.5
+            ],
+            "methane_ppb": [
+              null
+            ],
+            "co2_ppm": [
+              null
+            ]
+          },
+          "solar_irradiance": {
+            "clear_sky": {
+              "ghi": 908.63,
+              "dni": 791.83,
+              "dhi": 157.67
+            },
+            "description": "These modeled clear-sky irradiance estimates in W/m² describe the specific location at 2024-07-15 14:00. GHI is global horizontal irradiance, DNI is direct normal irradiance, and DHI is diffuse horizontal irradiance."
+          }
+        }
+      ]
+    }
+  }
+}
