@@ -18,4 +18,48 @@
 
 ## Recorded Findings
 
-_Findings will be added as Phase 1–4 progress._
+### F-01: Simultaneous `504 upstream request timeout` across REST, MCP, and Docs hosts
+| Field | Details |
+|---|---|
+| **Finding** | All tested FortyGuard REST endpoints (`POST /v1/system/fetch-api-key-usage`, `GET /v1/monitors`, `POST /v1/env_params`), the MCP server (`POST https://tos-mcp.app.fortyguard.com/mcp`), and the documentation site (`docs-api.fortyguard.com`) timed out during testing on 2026-11-17 between `22:11 UTC` and `22:19 UTC`. |
+| **Evidence Status** | **Observed** |
+| **Category** | Reliability / Error Handling / Availability |
+| **Evidence** | See Tests 1–7 in [api-test-log.md](file:///C:/Users/Kamiye/Desktop/urban-heat%20model/notes/api-test-log.md): 5 REST calls returned `504` (`Content-Type: text/plain`, body `upstream request timeout`) in `15.520s`–`18.304s`; MCP `initialize` returned `504` `text/plain` `upstream request timeout`; `docs-api.fortyguard.com/docs/quickstart` hit a `15s` `ReadTimeoutError`. |
+| **Impact** | Blocks all API/MCP workflows and documentation access during the window; additionally, clients expecting JSON error bodies receive `text/plain` (`upstream request timeout`) on gateway timeouts, which can break strict JSON parsers if not guarded. |
+| **Severity** | **High** (for availability during window) / **Medium** (for non-JSON gateway error response format) |
+| **Recommendation** | Publish a public status page or health endpoint, ensure gateway timeouts return structured JSON (`{"error": ..., "code": 504}`) when `Accept`/`Content-Type` is `application/json`, and document recommended client retry/backoff behavior for `504` responses. |
+
+**F-01 addendum (2026-11-18 ~05:31 UTC):** after the API recovered, the docs host was still unstable: `docs-api.fortyguard.com/docs/` returned `200` (20.7s, SPA shell only), while `/docs/quickstart`, `/llms.txt`, `/openapi.json` and `api.fortyguard.com/openapi.json` returned `503 text/plain "no healthy upstream"` (Envoy-style proxy message). Unauthenticated GETs failed too, so the cause is server-side. Also observed: intermittent `504` vs `503`, both as `text/plain`. No public OpenAPI spec was reachable.
+
+### F-02: Credential handling inconsistency & raw key echo on `POST /v1/system/fetch-api-key-usage`
+| Field | Details |
+|---|---|
+| **Finding** | `POST /v1/system/fetch-api-key-usage` rejects requests that only pass the `api-key` header (`422 Field 'api_key' is required` in `body.api_key`) and, when supplied in the JSON body, echoes the full `api_key` string back in the `200` response payload. |
+| **Evidence Status** | **Observed** |
+| **Category** | API Design / Security / Developer Experience |
+| **Evidence** | Tests 8 & 9 in [api-test-log.md](file:///C:/Users/Kamiye/Desktop/urban-heat%20model/notes/api-test-log.md); sanitized output in [account_usage.json](file:///C:/Users/Kamiye/Desktop/urban-heat%20model/data/raw/account_usage.json). |
+| **Impact** | Forces callers to pass the secret in both a header (`api-key`, hyphenated) and JSON body (`api_key`, underscored), and increases risk of accidental credential leakage in application logs or saved response payloads. |
+| **Severity** | **Medium** |
+| **Recommendation** | Authenticate `fetch-api-key-usage` solely via the standard `api-key` header (or make `body.api_key` optional for multi-key admin lookups) and mask the returned `api_key` (e.g., prefix/last-4 characters) in responses. |
+
+### F-03: Inconsistent temperature units & confusing Street View angle parameter naming in MCP schemas
+| Field | Details |
+|---|---|
+| **Finding** | Across the live MCP tool schemas, `env_params` and `heatmap` expect temperature inputs in Celsius (°C), whereas `report` requires `temperature` in Fahrenheit (°F) and `monitoring` supports choosing `"celsius"` or `"fahrenheit"`. Additionally, `streetview` names the compass heading parameter `vertical_angle` and the pitch parameter `horizontal_angle` (0–360, which the engine divides by 100 so `100` becomes `1°`). |
+| **Evidence Status** | **Observed** (in MCP `tools/list` schema) |
+| **Category** | API Design / MCP / Developer Experience |
+| **Evidence** | [mcp_tools.json](file:///C:/Users/Kamiye/Desktop/urban-heat%20model/data/raw/mcp_tools.json) (`env_params`, `heatmap`, `monitoring`, `report`, `streetview` schemas). |
+| **Impact** | Easy for developers or LLM agents chaining tools (e.g., passing an `env_params` °C value directly into `report`, or passing normal pitch/heading degrees into `streetview`) to silently supply wrong units or camera angles. |
+| **Severity** | **Medium** |
+| **Recommendation** | Standardize on Celsius (or accept an explicit `unit` field consistently across `env_params`, `heatmap`, and `report`), and introduce clear aliases (`heading_deg`, `pitch_deg`) alongside the legacy `vertical_angle`/`horizontal_angle` fields. |
+
+### F-04: `env_params` requires caller-supplied temperature & `heatmap` carries legacy ignored `map_type`
+| Field | Details |
+|---|---|
+| **Finding** | `env_params` requires a caller-supplied `temperature` (°C) to compute `heat_index_celsius` alongside provider-sourced apparent/wet-bulb temperatures, rather than returning FortyGuard's own LTM air temperature directly. Meanwhile, `heatmap` accepts `map_type` (`bm`/`tcm`/`tccm`) only as an ignored legacy compatibility parameter in favor of `analytic_type`. |
+| **Evidence Status** | **Observed** (in MCP `tools/list` schema) |
+| **Category** | API Design / Documentation / ML Feasibility |
+| **Evidence** | [mcp_tools.json](file:///C:/Users/Kamiye/Desktop/urban-heat%20model/data/raw/mcp_tools.json) (`env_params` and `heatmap` descriptions/schemas). |
+| **Impact** | Important for downstream modeling: using `env_params` `heat_index_celsius` against the caller's own `temperature` input would create target leakage or trivial identity if misunderstood; `heatmap` (or provider-sourced `apparent_temperature_celsius`/`wet_bulb_temperature_celsius`) must be inspected first before choosing an ML target. |
+| **Severity** | **Low** (UX/docs clarity) / **High** (for correct ML target selection) |
+| **Recommendation** | Clearly separate `env_params` ("ambient weather/AQI enrichment given a reference temp") from `heatmap` ("FortyGuard LTM temperature grid") in top-level docs, and deprecate `map_type` cleanly in the schema. |
