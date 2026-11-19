@@ -337,3 +337,14 @@
 - **Activity ID (if async):** `2c342194-a432-4d72-a382-83a996d8cefb`
 - **Observed Response Summary / Sanitized File:** Saved to [heat_intelligence_la_20240715.json](file:///C:/Users/Kamiye/Desktop/urban-heat%20model/data/raw/heat_intelligence_la_20240715.json) with `download_link` redacted (`[REDACTED_SIGNED_URL]`). Credits deducted: `8,600` (`943,980` remaining).
 - **Notes / Anomalies:** Report generation took ~2.6 minutes as documented; `download_link` was present on completion.
+
+### Test 30 — MCP Async `heatmap` + `heatmap_read` & REST GeoJSON Retrieval (Griffith Park, LA)
+- **Timestamp (local):** 2026-11-19T18:50+01:00 (2026-11-19T17:50:47Z)
+- **Interface:** MCP (`heatmap`, `heatmap_read`, `credit_balance`) + REST (`GET /v1/status/{id}`)
+- **Endpoint / Tool:** `heatmap` -> `heatmap_read` (3 polls) -> `GET /v1/status/3840fee2-56ad-4e68-be94-e98da30019c9`
+- **Sanitized Request Parameters:** ~0.8 km² Griffith Park `FeatureCollection` (`[-118.305, 34.128]` to `[-118.295, 34.136]`), `2024-07-15 14:00` (`filter_type: 1`), `granularity: 100`, `analytic_type: "tcm"`, `idempotency_key: "griffith-mcp-20240715-v1"`
+- **HTTP Status / MCP Outcome:** `200`, `isError: false`; `processing` × 2 -> `completed` in `21.671s`; REST status `200` (`5.514s`)
+- **Latency (seconds):** `2.830` (MCP submit), `21.671` (MCP polling), `5.514` (REST GeoJSON fetch)
+- **Activity ID (if async):** `3840fee2-56ad-4e68-be94-e98da30019c9`
+- **Observed Response Summary / Sanitized File:** Saved to [mcp_heatmap_griffith_20240715.json](file:///C:/Users/Kamiye/Desktop/urban-heat%20model/data/raw/mcp_heatmap_griffith_20240715.json) and [heatmap_griffith_20240715.json](file:///C:/Users/Kamiye/Desktop/urban-heat%20model/data/raw/heatmap_griffith_20240715.json) (**81** GeoJSON tiles). Griffith Park temp: `28.61` to `30.63 °C` (mean `29.70 °C`, stdev `0.66 °C`) vs. Downtown LA mean `33.10 °C` at the same hour. MCP `credit_balance`: `936,260` (`4,220` for heatmap + delayed `3,500` settlement from Test 27 `routing`).
+- **Notes / Anomalies:** Confirms bidirectional REST/MCP `activity_id` interoperability (`heatmap` submitted via MCP can be fetched as full GeoJSON via REST). Phase 3 is now 100% complete.

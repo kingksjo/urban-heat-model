@@ -1,0 +1,163 @@
+{
+  "request": {
+    "polygon_aoi": {
+      "type": "FeatureCollection",
+      "features": [
+        {
+          "type": "Feature",
+          "properties": {},
+          "geometry": {
+            "type": "Polygon",
+            "coordinates": [
+              [
+                [
+                  -118.305,
+                  34.128
+                ],
+                [
+                  -118.295,
+                  34.128
+                ],
+                [
+                  -118.295,
+                  34.136
+                ],
+                [
+                  -118.305,
+                  34.136
+                ],
+                [
+                  -118.305,
+                  34.128
+                ]
+              ]
+            ]
+          }
+        }
+      ]
+    },
+    "date_time": {
+      "start_date": "2024-07-15",
+      "start_time": "14:00",
+      "filter_type": 1
+    },
+    "granularity": 100,
+    "analytic_type": "tcm",
+    "idempotency_key": "griffith-mcp-20240715-v1"
+  },
+  "submit": {
+    "tool": "heatmap",
+    "status_code": 200,
+    "latency_s": 2.83,
+    "content_type": "text/event-stream",
+    "body": {
+      "jsonrpc": "2.0",
+      "id": 2,
+      "result": {
+        "content": [
+          {
+            "text": "{\"ok\":true,\"result\":{\"tool\":\"heatmap\",\"value\":{\"status\":\"processing\",\"message\":\"Your heatmap is being generated.\",\"activity_id\":\"3840fee2-56ad-4e68-be94-e98da30019c9\"},\"activity_id\":\"3840fee2-56ad-4e68-be94-e98da30019c9\",\"billing\":{\"submission_kind\":\"new\",\"credits_reserved_this_request\":4220},\"evidence\":[],\"warnings\":[]},\"trace\":{\"trace_id\":\"750608a5a2ba\",\"tool\":\"heatmap\",\"plan_type\":\"premium\",\"decision\":\"allow\",\"status\":\"ok\",\"latency_ms\":1791,\"cost_credits\":4220}}",
+            "type": "text"
+          }
+        ],
+        "isError": false,
+        "structuredContent": {
+          "ok": true,
+          "result": {
+            "tool": "heatmap",
+            "value": {
+              "status": "processing",
+              "message": "Your heatmap is being generated.",
+              "activity_id": "3840fee2-56ad-4e68-be94-e98da30019c9"
+            },
+            "activity_id": "3840fee2-56ad-4e68-be94-e98da30019c9",
+            "billing": {
+              "submission_kind": "new",
+              "credits_reserved_this_request": 4220
+            },
+            "evidence": [],
+            "warnings": []
+          },
+          "trace": {
+            "trace_id": "750608a5a2ba",
+            "tool": "heatmap",
+            "plan_type": "premium",
+            "decision": "allow",
+            "status": "ok",
+            "latency_ms": 1791,
+            "cost_credits": 4220
+          }
+        }
+      }
+    }
+  },
+  "transitions": [
+    [
+      1,
+      "processing",
+      6.68
+    ],
+    [
+      2,
+      "processing",
+      14.361
+    ],
+    [
+      3,
+      "completed",
+      21.671
+    ]
+  ],
+  "final_read": {
+    "tool": "heatmap_read",
+    "status_code": 200,
+    "latency_s": 2.309,
+    "content_type": "text/event-stream",
+    "body": {
+      "jsonrpc": "2.0",
+      "id": 5,
+      "result": {
+        "content": [
+          {
+            "text": "{\"ok\":true,\"result\":{\"tool\":\"heatmap_read\",\"value\":{\"status\":\"completed\",\"heatmap_id\":\"3840fee2-56ad-4e68-be94-e98da30019c9\",\"temperature_unit\":\"celsius\",\"stats\":{\"temperature_stats\":{\"minimum_celsius\":28.6098,\"maximum_celsius\":30.6313,\"mean_celsius\":29.700851851851855,\"standard_deviation_celsius\":0.6647462758660464}},\"mean_temperature_celsius\":29.700851851851855},\"heatmap_id\":\"3840fee2-56ad-4e68-be94-e98da30019c9\",\"activity_id\":\"3840fee2-56ad-4e68-be94-e98da30019c9\",\"evidence\":[],\"warnings\":[]},\"trace\":{\"trace_id\":\"eae90b360559\",\"tool\":\"heatmap_read\",\"plan_type\":\"premium\",\"decision\":\"allow\",\"status\":\"ok\",\"latency_ms\":1382,\"cost_credits\":0}}",
+            "type": "text"
+          }
+        ],
+        "isError": false,
+        "structuredContent": {
+          "ok": true,
+          "result": {
+            "tool": "heatmap_read",
+            "value": {
+              "status": "completed",
+              "heatmap_id": "3840fee2-56ad-4e68-be94-e98da30019c9",
+              "temperature_unit": "celsius",
+              "stats": {
+                "temperature_stats": {
+                  "minimum_celsius": 28.6098,
+                  "maximum_celsius": 30.6313,
+                  "mean_celsius": 29.700851851851855,
+                  "standard_deviation_celsius": 0.6647462758660464
+                }
+              },
+              "mean_temperature_celsius": 29.700851851851855
+            },
+            "heatmap_id": "3840fee2-56ad-4e68-be94-e98da30019c9",
+            "activity_id": "3840fee2-56ad-4e68-be94-e98da30019c9",
+            "evidence": [],
+            "warnings": []
+          },
+          "trace": {
+            "trace_id": "eae90b360559",
+            "tool": "heatmap_read",
+            "plan_type": "premium",
+            "decision": "allow",
+            "status": "ok",
+            "latency_ms": 1382,
+            "cost_credits": 0
+          }
+        }
+      }
+    }
+  }
+}

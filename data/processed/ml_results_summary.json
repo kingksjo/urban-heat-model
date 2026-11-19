@@ -1,0 +1,134 @@
+{
+  "rows": 2507,
+  "neighborhoods": 36,
+  "cv_strategy": "5-fold GroupKFold by neighborhood",
+  "results": {
+    "urban_form_only": [
+      {
+        "model": "Mean Baseline",
+        "mae_c": 3.7219,
+        "rmse_c": 4.2184,
+        "r2": -0.0203
+      },
+      {
+        "model": "Ridge Regression",
+        "mae_c": 3.7327,
+        "rmse_c": 4.2593,
+        "r2": -0.0402
+      },
+      {
+        "model": "Random Forest",
+        "mae_c": 3.968,
+        "rmse_c": 4.6824,
+        "r2": -0.2572
+      },
+      {
+        "model": "Extra Trees",
+        "mae_c": 3.9085,
+        "rmse_c": 4.5342,
+        "r2": -0.1788
+      },
+      {
+        "model": "HistGradientBoosting",
+        "mae_c": 4.0657,
+        "rmse_c": 4.8498,
+        "r2": -0.3487
+      }
+    ],
+    "urban_form_plus_geo": [
+      {
+        "model": "Mean Baseline",
+        "mae_c": 3.7219,
+        "rmse_c": 4.2184,
+        "r2": -0.0203
+      },
+      {
+        "model": "Ridge Regression",
+        "mae_c": 2.1889,
+        "rmse_c": 2.7639,
+        "r2": 0.562
+      },
+      {
+        "model": "Random Forest",
+        "mae_c": 1.3055,
+        "rmse_c": 2.0039,
+        "r2": 0.7697
+      },
+      {
+        "model": "Extra Trees",
+        "mae_c": 0.99,
+        "rmse_c": 1.4114,
+        "r2": 0.8858
+      },
+      {
+        "model": "HistGradientBoosting",
+        "mae_c": 1.339,
+        "rmse_c": 2.0437,
+        "r2": 0.7605
+      }
+    ]
+  },
+  "best_model_geo": "Extra Trees",
+  "permutation_importance_geo": [
+    {
+      "feature": "dist_to_coast_km",
+      "mae_increase_c": 2.9559,
+      "std_c": 0.7929
+    },
+    {
+      "feature": "dist_to_dtla_km",
+      "mae_increase_c": 0.2674,
+      "std_c": 0.2835
+    },
+    {
+      "feature": "elevation_m",
+      "mae_increase_c": 0.0716,
+      "std_c": 0.137
+    },
+    {
+      "feature": "osm_building_count",
+      "mae_increase_c": 0.0048,
+      "std_c": 0.0076
+    },
+    {
+      "feature": "osm_industrial_comm_pct",
+      "mae_increase_c": 0.0014,
+      "std_c": 0.0016
+    },
+    {
+      "feature": "osm_building_pct",
+      "mae_increase_c": 0.0011,
+      "std_c": 0.0013
+    },
+    {
+      "feature": "osm_green_pct",
+      "mae_increase_c": 0.0011,
+      "std_c": 0.0043
+    },
+    {
+      "feature": "osm_parking_pct",
+      "mae_increase_c": 0.0006,
+      "std_c": 0.0019
+    },
+    {
+      "feature": "osm_water_pct",
+      "mae_increase_c": -0.0,
+      "std_c": 0.0
+    },
+    {
+      "feature": "osm_major_road_m",
+      "mae_increase_c": -0.0009,
+      "std_c": 0.0011
+    },
+    {
+      "feature": "osm_road_length_m",
+      "mae_increase_c": -0.0017,
+      "std_c": 0.003
+    },
+    {
+      "feature": "osm_residential_pct",
+      "mae_increase_c": -0.0026,
+      "std_c": 0.0041
+    }
+  ]
+}

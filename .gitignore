@@ -16,3 +16,6 @@ __pycache__/
 # OS / editor noise
 .DS_Store
 Thumbs.db
+
+# Heavy free-to-refetch Overpass OSM caches (68+ MB; rebuilt by src/build_gis_features.py)
+data/raw/osm_cache/

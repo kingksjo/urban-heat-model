@@ -1,0 +1,658 @@
+{
+  "dataset": "urban_heat_pattern_explorer_phase4",
+  "date_time": "2024-07-15 14:00",
+  "granularity_m": 100,
+  "analytic_type": "tcm",
+  "total_neighborhoods": 36,
+  "total_tiles": 2507,
+  "neighborhoods": [
+    {
+      "slug": "downtown_la",
+      "name": "Downtown LA",
+      "zone": "urban_core",
+      "bbox": [
+        -118.248,
+        34.048,
+        -118.238,
+        34.056
+      ],
+      "source": "phase2_smoke_test",
+      "file_path": "data/raw/heatmap_la_20240715.json",
+      "activity_id": "470b48bb-e48b-4eb6-906e-6980fcfd9420",
+      "tile_count": 72,
+      "mean_temp_c": 33.096,
+      "min_temp_c": 32.652,
+      "max_temp_c": 33.409
+    },
+    {
+      "slug": "griffith_park",
+      "name": "Griffith Park",
+      "zone": "park_hills",
+      "bbox": [
+        -118.305,
+        34.128,
+        -118.295,
+        34.136
+      ],
+      "source": "phase3_mcp_test",
+      "file_path": "data/raw/heatmap_griffith_20240715.json",
+      "activity_id": "3840fee2-56ad-4e68-be94-e98da30019c9",
+      "tile_count": 81,
+      "mean_temp_c": 29.701,
+      "min_temp_c": 28.61,
+      "max_temp_c": 30.631
+    },
+    {
+      "slug": "santa_monica",
+      "name": "Santa Monica",
+      "zone": "coastal",
+      "bbox": [
+        -118.492,
+        34.014,
+        -118.482,
+        34.022
+      ],
+      "source": "phase4_collection",
+      "file_path": "data/raw/phase4_heatmaps/santa_monica_20240715.json",
+      "activity_id": "7bfd4af9-0a18-4b1a-9a98-cb4771137c03",
+      "tile_count": 65,
+      "mean_temp_c": 23.492,
+      "min_temp_c": 23.49,
+      "max_temp_c": 23.499
+    },
+    {
+      "slug": "venice",
+      "name": "Venice",
+      "zone": "coastal",
+      "bbox": [
+        -118.468,
+        33.99,
+        -118.458,
+        33.998
+      ],
+      "source": "phase4_collection",
+      "file_path": "data/raw/phase4_heatmaps/venice_20240715.json",
+      "activity_id": "cbd9ed93-a820-4564-b536-ac5a5d662fe7",
+      "tile_count": 87,
+      "mean_temp_c": 21.247,
+      "min_temp_c": 20.721,
+      "max_temp_c": 22.762
+    },
+    {
+      "slug": "playa_vista",
+      "name": "Playa Vista",
+      "zone": "coastal",
+      "bbox": [
+        -118.422,
+        33.972,
+        -118.412,
+        33.98
+      ],
+      "source": "phase4_collection",
+      "file_path": "data/raw/phase4_heatmaps/playa_vista_20240715.json",
+      "activity_id": "f2914719-edc6-4a5b-a11a-713451e1a36b",
+      "tile_count": 81,
+      "mean_temp_c": 24.701,
+      "min_temp_c": 24.363,
+      "max_temp_c": 24.912
+    },
+    {
+      "slug": "el_segundo",
+      "name": "El Segundo",
+      "zone": "coastal_industrial",
+      "bbox": [
+        -118.415,
+        33.918,
+        -118.405,
+        33.926
+      ],
+      "source": "phase4_collection",
+      "file_path": "data/raw/phase4_heatmaps/el_segundo_20240715.json",
+      "activity_id": "78370f23-5891-4a9b-a11c-b8bd4e1908c1",
+      "tile_count": 81,
+      "mean_temp_c": 23.714,
+      "min_temp_c": 23.342,
+      "max_temp_c": 24.253
+    },
+    {
+      "slug": "westwood_ucla",
+      "name": "Westwood / UCLA",
+      "zone": "westside",
+      "bbox": [
+        -118.448,
+        34.062,
+        -118.438,
+        34.07
+      ],
+      "source": "phase4_collection",
+      "file_path": "data/raw/phase4_heatmaps/westwood_ucla_20240715.json",
+      "activity_id": "06004b85-97cf-47c9-91ad-b58477e184a7",
+      "tile_count": 81,
+      "mean_temp_c": 25.137,
+      "min_temp_c": 24.572,
+      "max_temp_c": 25.836
+    },
+    {
+      "slug": "century_city",
+      "name": "Century City",
+      "zone": "westside",
+      "bbox": [
+        -118.42,
+        34.054,
+        -118.41,
+        34.062
+      ],
+      "source": "phase4_collection",
+      "file_path": "data/raw/phase4_heatmaps/century_city_20240715.json",
+      "activity_id": "21ef86c7-9fd3-4ea6-91a1-64b451987c00",
+      "tile_count": 48,
+      "mean_temp_c": 25.959,
+      "min_temp_c": 25.712,
+      "max_temp_c": 26.217
+    },
+    {
+      "slug": "brentwood",
+      "name": "Brentwood",
+      "zone": "westside",
+      "bbox": [
+        -118.478,
+        34.052,
+        -118.468,
+        34.06
+      ],
+      "source": "phase4_collection",
+      "file_path": "data/raw/phase4_heatmaps/brentwood_20240715.json",
+      "activity_id": "df65fa8c-3be0-435a-b5ba-a1429a8e29c9",
+      "tile_count": 90,
+      "mean_temp_c": 24.577,
+      "min_temp_c": 23.884,
+      "max_temp_c": 25.171
+    },
+    {
+      "slug": "culver_city",
+      "name": "Culver City",
+      "zone": "westside",
+      "bbox": [
+        -118.398,
+        34.018,
+        -118.388,
+        34.026
+      ],
+      "source": "phase4_collection",
+      "file_path": "data/raw/phase4_heatmaps/culver_city_20240715.json",
+      "activity_id": "a225c90c-48cb-47d3-a4d4-965e1f130d45",
+      "tile_count": 54,
+      "mean_temp_c": 26.267,
+      "min_temp_c": 26.035,
+      "max_temp_c": 26.36
+    },
+    {
+      "slug": "koreatown",
+      "name": "Koreatown",
+      "zone": "urban_core",
+      "bbox": [
+        -118.305,
+        34.058,
+        -118.295,
+        34.066
+      ],
+      "source": "phase4_collection",
+      "file_path": "data/raw/phase4_heatmaps/koreatown_20240715.json",
+      "activity_id": "d5c440b3-d9b3-45a7-818f-83e697e26532",
+      "tile_count": 63,
+      "mean_temp_c": 30.755,
+      "min_temp_c": 30.736,
+      "max_temp_c": 30.763
+    },
+    {
+      "slug": "hollywood",
+      "name": "Hollywood",
+      "zone": "urban_core",
+      "bbox": [
+        -118.332,
+        34.096,
+        -118.322,
+        34.104
+      ],
+      "source": "phase4_collection",
+      "file_path": "data/raw/phase4_heatmaps/hollywood_20240715.json",
+      "activity_id": "68ecc847-6267-43ea-851f-9596a066850f",
+      "tile_count": 59,
+      "mean_temp_c": 28.939,
+      "min_temp_c": 28.593,
+      "max_temp_c": 29.344
+    },
+    {
+      "slug": "echo_park",
+      "name": "Echo Park",
+      "zone": "central_east",
+      "bbox": [
+        -118.268,
+        34.072,
+        -118.258,
+        34.08
+      ],
+      "source": "phase4_collection",
+      "file_path": "data/raw/phase4_heatmaps/echo_park_20240715.json",
+      "activity_id": "b3ac033e-9f38-4b76-bee8-2621cae1f717",
+      "tile_count": 84,
+      "mean_temp_c": 32.09,
+      "min_temp_c": 32.061,
+      "max_temp_c": 32.154
+    },
+    {
+      "slug": "boyle_heights",
+      "name": "Boyle Heights",
+      "zone": "central_east",
+      "bbox": [
+        -118.212,
+        34.036,
+        -118.202,
+        34.044
+      ],
+      "source": "phase4_collection",
+      "file_path": "data/raw/phase4_heatmaps/boyle_heights_20240715.json",
+      "activity_id": "4f1fdbf5-01ea-44ad-aeb8-8e58f81c7977",
+      "tile_count": 35,
+      "mean_temp_c": 33.267,
+      "min_temp_c": 33.128,
+      "max_temp_c": 33.41
+    },
+    {
+      "slug": "lincoln_heights",
+      "name": "Lincoln Heights",
+      "zone": "central_east",
+      "bbox": [
+        -118.215,
+        34.068,
+        -118.205,
+        34.076
+      ],
+      "source": "phase4_collection",
+      "file_path": "data/raw/phase4_heatmaps/lincoln_heights_20240715.json",
+      "activity_id": "90b6a93d-0a30-4261-b644-b873611411b1",
+      "tile_count": 81,
+      "mean_temp_c": 33.635,
+      "min_temp_c": 33.48,
+      "max_temp_c": 33.745
+    },
+    {
+      "slug": "west_adams",
+      "name": "West Adams",
+      "zone": "central",
+      "bbox": [
+        -118.338,
+        34.028,
+        -118.328,
+        34.036
+      ],
+      "source": "phase4_collection",
+      "file_path": "data/raw/phase4_heatmaps/west_adams_20240715.json",
+      "activity_id": "5acce839-4cf1-4bd5-9f6c-0ac3a3021d5c",
+      "tile_count": 83,
+      "mean_temp_c": 28.367,
+      "min_temp_c": 27.555,
+      "max_temp_c": 28.993
+    },
+    {
+      "slug": "vernon_industrial",
+      "name": "Vernon Industrial",
+      "zone": "industrial",
+      "bbox": [
+        -118.23,
+        34.0,
+        -118.22,
+        34.008
+      ],
+      "source": "phase4_collection",
+      "file_path": "data/raw/phase4_heatmaps/vernon_industrial_20240715.json",
+      "activity_id": "51fce903-cbf7-4632-8c3c-25e99f775368",
+      "tile_count": 72,
+      "mean_temp_c": 32.19,
+      "min_temp_c": 31.542,
+      "max_temp_c": 32.749
+    },
+    {
+      "slug": "commerce",
+      "name": "City of Commerce",
+      "zone": "industrial",
+      "bbox": [
+        -118.155,
+        33.998,
+        -118.145,
+        34.006
+      ],
+      "source": "phase4_collection",
+      "file_path": "data/raw/phase4_heatmaps/commerce_20240715.json",
+      "activity_id": "4f58b7b9-c307-4db5-8270-94b582af1df6",
+      "tile_count": 49,
+      "mean_temp_c": 34.058,
+      "min_temp_c": 34.037,
+      "max_temp_c": 34.074
+    },
+    {
+      "slug": "inglewood",
+      "name": "Inglewood",
+      "zone": "south_la",
+      "bbox": [
+        -118.355,
+        33.956,
+        -118.345,
+        33.964
+      ],
+      "source": "phase4_collection",
+      "file_path": "data/raw/phase4_heatmaps/inglewood_20240715.json",
+      "activity_id": "443d4f60-f2cc-42a6-8201-5320945ce0b2",
+      "tile_count": 40,
+      "mean_temp_c": 26.037,
+      "min_temp_c": 25.75,
+      "max_temp_c": 26.394
+    },
+    {
+      "slug": "watts",
+      "name": "Watts",
+      "zone": "south_la",
+      "bbox": [
+        -118.25,
+        33.938,
+        -118.24,
+        33.946
+      ],
+      "source": "phase4_collection",
+      "file_path": "data/raw/phase4_heatmaps/watts_20240715.json",
+      "activity_id": "701a038e-c207-4776-b889-3eecb4d13d54",
+      "tile_count": 72,
+      "mean_temp_c": 30.381,
+      "min_temp_c": 29.73,
+      "max_temp_c": 30.936
+    },
+    {
+      "slug": "compton",
+      "name": "Compton",
+      "zone": "south_la",
+      "bbox": [
+        -118.225,
+        33.892,
+        -118.215,
+        33.9
+      ],
+      "source": "phase4_collection",
+      "file_path": "data/raw/phase4_heatmaps/compton_20240715.json",
+      "activity_id": "679569e4-0b0e-4758-8f24-f3750fd2be29",
+      "tile_count": 81,
+      "mean_temp_c": 30.64,
+      "min_temp_c": 30.64,
+      "max_temp_c": 30.64
+    },
+    {
+      "slug": "torrance",
+      "name": "Torrance",
+      "zone": "south_bay",
+      "bbox": [
+        -118.345,
+        33.832,
+        -118.335,
+        33.84
+      ],
+      "source": "phase4_collection",
+      "file_path": "data/raw/phase4_heatmaps/torrance_20240715.json",
+      "activity_id": "a5f460ae-cfeb-4cf2-ae6d-b9db32ae719f",
+      "tile_count": 84,
+      "mean_temp_c": 24.879,
+      "min_temp_c": 23.768,
+      "max_temp_c": 25.643
+    },
+    {
+      "slug": "long_beach_downtown",
+      "name": "Long Beach Downtown",
+      "zone": "harbor",
+      "bbox": [
+        -118.195,
+        33.768,
+        -118.185,
+        33.776
+      ],
+      "source": "phase4_collection",
+      "file_path": "data/raw/phase4_heatmaps/long_beach_downtown_20240715.json",
+      "activity_id": "e0993a3d-666d-45c2-8103-fe19211790dc",
+      "tile_count": 72,
+      "mean_temp_c": 26.7,
+      "min_temp_c": 26.7,
+      "max_temp_c": 26.7
+    },
+    {
+      "slug": "long_beach_port",
+      "name": "Long Beach / Wilmington",
+      "zone": "harbor_industrial",
+      "bbox": [
+        -118.228,
+        33.772,
+        -118.218,
+        33.78
+      ],
+      "source": "phase4_collection",
+      "file_path": "data/raw/phase4_heatmaps/long_beach_port_20240715.json",
+      "activity_id": "7d391126-d8cd-4a77-82ef-1abefdbbf23a",
+      "tile_count": 54,
+      "mean_temp_c": 29.477,
+      "min_temp_c": 28.197,
+      "max_temp_c": 30.731
+    },
+    {
+      "slug": "burbank",
+      "name": "Burbank",
+      "zone": "valley",
+      "bbox": [
+        -118.315,
+        34.178,
+        -118.305,
+        34.186
+      ],
+      "source": "phase4_collection",
+      "file_path": "data/raw/phase4_heatmaps/burbank_20240715.json",
+      "activity_id": "589b93f5-18dc-4de3-b420-8bf668f6a9ba",
+      "tile_count": 81,
+      "mean_temp_c": 33.58,
+      "min_temp_c": 33.293,
+      "max_temp_c": 33.948
+    },
+    {
+      "slug": "glendale",
+      "name": "Glendale",
+      "zone": "foothills",
+      "bbox": [
+        -118.26,
+        34.142,
+        -118.25,
+        34.15
+      ],
+      "source": "phase4_collection",
+      "file_path": "data/raw/phase4_heatmaps/glendale_20240715.json",
+      "activity_id": "1cac0877-e898-4ff7-91d1-bdd465cbb31c",
+      "tile_count": 72,
+      "mean_temp_c": 33.39,
+      "min_temp_c": 33.39,
+      "max_temp_c": 33.39
+    },
+    {
+      "slug": "pasadena",
+      "name": "Pasadena",
+      "zone": "sgv_foothills",
+      "bbox": [
+        -118.148,
+        34.144,
+        -118.138,
+        34.152
+      ],
+      "source": "phase4_collection",
+      "file_path": "data/raw/phase4_heatmaps/pasadena_20240715.json",
+      "activity_id": "4283017b-d579-4c15-838f-f5ebdbd6f2e6",
+      "tile_count": 81,
+      "mean_temp_c": 34.023,
+      "min_temp_c": 33.541,
+      "max_temp_c": 34.231
+    },
+    {
+      "slug": "sherman_oaks",
+      "name": "Sherman Oaks",
+      "zone": "valley",
+      "bbox": [
+        -118.45,
+        34.148,
+        -118.44,
+        34.156
+      ],
+      "source": "phase4_collection",
+      "file_path": "data/raw/phase4_heatmaps/sherman_oaks_20240715.json",
+      "activity_id": "61eb727a-5e77-44a0-919b-c29ff8c86f12",
+      "tile_count": 80,
+      "mean_temp_c": 31.727,
+      "min_temp_c": 28.426,
+      "max_temp_c": 32.871
+    },
+    {
+      "slug": "van_nuys",
+      "name": "Van Nuys",
+      "zone": "valley",
+      "bbox": [
+        -118.452,
+        34.184,
+        -118.442,
+        34.192
+      ],
+      "source": "phase4_collection",
+      "file_path": "data/raw/phase4_heatmaps/van_nuys_20240715.json",
+      "activity_id": "a6c1b6a5-977d-4b14-98e8-04a19ab440e4",
+      "tile_count": 42,
+      "mean_temp_c": 33.039,
+      "min_temp_c": 32.657,
+      "max_temp_c": 33.415
+    },
+    {
+      "slug": "northridge",
+      "name": "Northridge",
+      "zone": "valley",
+      "bbox": [
+        -118.535,
+        34.234,
+        -118.525,
+        34.242
+      ],
+      "source": "phase4_collection",
+      "file_path": "data/raw/phase4_heatmaps/northridge_20240715.json",
+      "activity_id": "bb1460c5-307a-4260-ba9b-ca8f5030b643",
+      "tile_count": 63,
+      "mean_temp_c": 36.437,
+      "min_temp_c": 36.022,
+      "max_temp_c": 36.986
+    },
+    {
+      "slug": "woodland_hills",
+      "name": "Woodland Hills",
+      "zone": "west_valley",
+      "bbox": [
+        -118.608,
+        34.166,
+        -118.598,
+        34.174
+      ],
+      "source": "phase4_collection",
+      "file_path": "data/raw/phase4_heatmaps/woodland_hills_20240715.json",
+      "activity_id": "8f732933-a08e-4c85-ac48-2a0ad2711c6f",
+      "tile_count": 45,
+      "mean_temp_c": 35.05,
+      "min_temp_c": 34.496,
+      "max_temp_c": 36.274
+    },
+    {
+      "slug": "alhambra",
+      "name": "Alhambra",
+      "zone": "sgv",
+      "bbox": [
+        -118.132,
+        34.09,
+        -118.122,
+        34.098
+      ],
+      "source": "phase4_collection",
+      "file_path": "data/raw/phase4_heatmaps/alhambra_20240715.json",
+      "activity_id": "7c2e969c-fdd4-4e07-ae55-97db3489b2f1",
+      "tile_count": 72,
+      "mean_temp_c": 33.965,
+      "min_temp_c": 33.281,
+      "max_temp_c": 34.195
+    },
+    {
+      "slug": "el_monte",
+      "name": "El Monte",
+      "zone": "sgv",
+      "bbox": [
+        -118.032,
+        34.068,
+        -118.022,
+        34.076
+      ],
+      "source": "phase4_collection",
+      "file_path": "data/raw/phase4_heatmaps/el_monte_20240715.json",
+      "activity_id": "5178972a-ff1c-4234-8a4c-31e63b2d15e0",
+      "tile_count": 81,
+      "mean_temp_c": 34.15,
+      "min_temp_c": 34.15,
+      "max_temp_c": 34.15
+    },
+    {
+      "slug": "arcadia",
+      "name": "Arcadia",
+      "zone": "sgv_foothills",
+      "bbox": [
+        -118.04,
+        34.136,
+        -118.03,
+        34.144
+      ],
+      "source": "phase4_collection",
+      "file_path": "data/raw/phase4_heatmaps/arcadia_20240715.json",
+      "activity_id": "baafda16-3158-4010-9761-cc9e30275010",
+      "tile_count": 72,
+      "mean_temp_c": 35.261,
+      "min_temp_c": 35.023,
+      "max_temp_c": 35.461
+    },
+    {
+      "slug": "sun_valley",
+      "name": "Sun Valley",
+      "zone": "valley_industrial",
+      "bbox": [
+        -118.385,
+        34.222,
+        -118.375,
+        34.23
+      ],
+      "source": "phase4_collection",
+      "file_path": "data/raw/phase4_heatmaps/sun_valley_20240715.json",
+      "activity_id": "e2bab526-cca2-447d-92c2-83d15e831dfb",
+      "tile_count": 74,
+      "mean_temp_c": 34.98,
+      "min_temp_c": 34.977,
+      "max_temp_c": 34.981
+    },
+    {
+      "slug": "la_canada_foothills",
+      "name": "La Canada Foothills",
+      "zone": "foothills",
+      "bbox": [
+        -118.18,
+        34.202,
+        -118.17,
+        34.21
+      ],
+      "source": "phase4_collection",
+      "file_path": "data/raw/phase4_heatmaps/la_canada_foothills_20240715.json",
+      "activity_id": "e9ca0975-ed89-4e36-b306-7e12799a0dae",
+      "tile_count": 75,
+      "mean_temp_c": 33.383,
+      "min_temp_c": 33.292,
+      "max_temp_c": 33.542
+    }
+  ]
+}
