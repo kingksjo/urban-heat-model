@@ -63,4 +63,4 @@ python -m src.train_ml_prototype
 * **Dataset:** `2,507` `100m × 100m` tiles across `36` LA Basin neighborhoods (`20.72–36.99 °C` on `2024-07-15 14:00`).
 * **Best Spatial-CV Model (`Extra Trees`, Urban Form + Macro-Geography):** `MAE = 0.9900 °C`, `RMSE = 1.4114 °C`, `R² = 0.8858` (vs. Mean Baseline `MAE = 3.7219 °C`).
 * **Figures:** Saved under `report/figures/phase4_*.png`.
-* **Next:** Build & execute `notebooks/01–03` and complete `report/fortyguard_evaluation.md` (Phase 5).
+* **Notebooks & Final Report:** See [notebooks/01_api_exploration.ipynb](notebooks/01_api_exploration.ipynb), [notebooks/02_dataset_build.ipynb](notebooks/02_dataset_build.ipynb), [notebooks/03_ml_prototype.ipynb](notebooks/03_ml_prototype.ipynb), and [report/fortyguard_evaluation.md](report/fortyguard_evaluation.md).
