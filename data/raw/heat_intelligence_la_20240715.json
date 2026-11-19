@@ -1,0 +1,171 @@
+{
+  "request": {
+    "latitude": 34.0522,
+    "longitude": -118.2437,
+    "temperature": 91.6,
+    "date": "2024-07-15",
+    "analysis": [
+      "environmental"
+    ]
+  },
+  "submit_status": 200,
+  "submit_latency_s": 2.818,
+  "submit_body": {
+    "error": false,
+    "status_code": 200,
+    "message": "Heat Intelligence Submitted Successfully",
+    "data": {
+      "activity_id": "2c342194-a432-4d72-a382-83a996d8cefb"
+    }
+  },
+  "poll": {
+    "activity_id": "2c342194-a432-4d72-a382-83a996d8cefb",
+    "final_status": "Completed",
+    "attempts": 26,
+    "total_elapsed_s": 157.309,
+    "transitions": [
+      [
+        1,
+        "Processing",
+        1.03
+      ],
+      [
+        2,
+        "Processing",
+        7.42
+      ],
+      [
+        3,
+        "Processing",
+        13.649
+      ],
+      [
+        4,
+        "Processing",
+        26.059
+      ],
+      [
+        5,
+        "Processing",
+        32.099
+      ],
+      [
+        6,
+        "Processing",
+        38.159
+      ],
+      [
+        7,
+        "Processing",
+        43.749
+      ],
+      [
+        8,
+        "Processing",
+        50.209
+      ],
+      [
+        9,
+        "Processing",
+        55.829
+      ],
+      [
+        10,
+        "Processing",
+        61.549
+      ],
+      [
+        11,
+        "Processing",
+        67.599
+      ],
+      [
+        12,
+        "Processing",
+        73.24
+      ],
+      [
+        13,
+        "Processing",
+        79.619
+      ],
+      [
+        14,
+        "Processing",
+        85.539
+      ],
+      [
+        15,
+        "Processing",
+        91.519
+      ],
+      [
+        16,
+        "Processing",
+        97.719
+      ],
+      [
+        17,
+        "Processing",
+        104.089
+      ],
+      [
+        18,
+        "Processing",
+        109.668
+      ],
+      [
+        19,
+        "Processing",
+        115.349
+      ],
+      [
+        20,
+        "Processing",
+        121.209
+      ],
+      [
+        21,
+        "Processing",
+        126.858
+      ],
+      [
+        22,
+        "Processing",
+        132.898
+      ],
+      [
+        23,
+        "Processing",
+        138.503
+      ],
+      [
+        24,
+        "Processing",
+        144.268
+      ],
+      [
+        25,
+        "Processing",
+        151.509
+      ],
+      [
+        26,
+        "Completed",
+        157.309
+      ]
+    ],
+    "final_body": {
+      "error": false,
+      "status_code": 200,
+      "message": "Completed",
+      "data": {
+        "activity_id": "2c342194-a432-4d72-a382-83a996d8cefb",
+        "status": "Completed",
+        "result": {
+          "download_link": "[REDACTED_SIGNED_URL]"
+        }
+      }
+    }
+  }
+}

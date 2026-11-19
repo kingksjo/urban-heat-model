@@ -1,0 +1,160 @@
+{
+  "request": {
+    "latitude": 34.0522,
+    "longitude": -118.2437,
+    "temperature": 30.0,
+    "date_time": {
+      "start_date": "2024-07-15",
+      "start_time": "14:00",
+      "filter_type": 1
+    }
+  },
+  "response": {
+    "tool": "env_params",
+    "status_code": 200,
+    "latency_s": 8.449,
+    "content_type": "text/event-stream",
+    "body": {
+      "jsonrpc": "2.0",
+      "id": 2,
+      "result": {
+        "content": [
+          {
+            "text": "{\"ok\":true,\"result\":{\"tool\":\"env_params\",\"value\":{\"parameters\":{\"apparent_temperature_celsius\":29.9,\"relative_humidity_percent\":42.6,\"precipitation_mm\":0.0,\"cloud_cover_octas\":0,\"wet_bulb_temperature_celsius\":20.3,\"elevation_meters\":91.0,\"aqi_us\":62.2},\"raw\":{\"metadata\":{\"timezone\":\"America/Los_Angeles\",\"timezone_offset_hours\":-7,\"time_range\":{\"start\":\"2024-07-15T14:00:00-07:00\",\"end\":\"2024-07-15T14:00:00-07:00\",\"interval\":\"1h\",\"count\":1},\"timestamps\":[\"2024-07-15T14:00:00-07:00\"]},\"locations\":[{\"lat\":34.0522,\"lon\":-118.2437,\"elevation\":91.0,\"temperature\":30.0,\"parameters\":{\"heat_index_celsius\":[30.0],\"apparent_temperature_celsius\":[29.9],\"relative_humidity_percent\":[42.6],\"precipitation_mm\":[0.0],\"cloud_cover_octas\":[0],\"wet_bulb_temperature_celsius\":[20.3],\"air_quality:idx\":[62.2],\"air_quality_pm2p5:idx\":[62.2],\"air_quality_pm10:idx\":[23.7],\"air_quality_no2:idx\":[3.5],\"aqi_us_co\":[1.5],\"air_quality_o3:idx\":[32.9],\"air_quality_so2:idx\":[4.5],\"methane_ppb\":[null],\"co2_ppm\":[null]},\"solar_irradiance\":{\"clear_sky\":{\"ghi\":908.63,\"dni\":791.83,\"dhi\":157.67},\"description\":\"These modeled clear-sky irradiance estimates in W/mÂ² describe the specific location at 2024-07-15 14:00. GHI is global horizontal irradiance, DNI is direct normal irradiance, and DHI is diffuse horizontal irradiance.\"}}]}},\"activity_id\":\"48203131-b96f-414c-bc42-cd42da3ddb66\",\"evidence\":[{\"source\":\"tOS-Enterprise-API /env_params\",\"activity_id\":\"48203131-b96f-414c-bc42-cd42da3ddb66\",\"catalog_version\":\"v2\",\"aoi\":{\"latitude\":34.0522,\"longitude\":-118.2437},\"date_window\":\"2024-07-15 14:00\",\"detail\":{\"fields\":[\"apparent_temperature_celsius\",\"relative_humidity_percent\",\"precipitation_mm\",\"cloud_cover_octas\",\"wet_bulb_temperature_celsius\",\"elevation_meters\",\"aqi_us\"]}}],\"warnings\":[]},\"trace\":{\"trace_id\":\"6bc85c6fb7a8\",\"tool\":\"env_params\",\"plan_type\":\"premium\",\"decision\":\"allow\",\"status\":\"ok\",\"latency_ms\":6628,\"cost_credits\":2900}}",
+            "type": "text"
+          }
+        ],
+        "isError": false,
+        "structuredContent": {
+          "ok": true,
+          "result": {
+            "tool": "env_params",
+            "value": {
+              "parameters": {
+                "apparent_temperature_celsius": 29.9,
+                "relative_humidity_percent": 42.6,
+                "precipitation_mm": 0.0,
+                "cloud_cover_octas": 0,
+                "wet_bulb_temperature_celsius": 20.3,
+                "elevation_meters": 91.0,
+                "aqi_us": 62.2
+              },
+              "raw": {
+                "metadata": {
+                  "timezone": "America/Los_Angeles",
+                  "timezone_offset_hours": -7,
+                  "time_range": {
+                    "start": "2024-07-15T14:00:00-07:00",
+                    "end": "2024-07-15T14:00:00-07:00",
+                    "interval": "1h",
+                    "count": 1
+                  },
+                  "timestamps": [
+                    "2024-07-15T14:00:00-07:00"
+                  ]
+                },
+                "locations": [
+                  {
+                    "lat": 34.0522,
+                    "lon": -118.2437,
+                    "elevation": 91.0,
+                    "temperature": 30.0,
+                    "parameters": {
+                      "heat_index_celsius": [
+                        30.0
+                      ],
+                      "apparent_temperature_celsius": [
+                        29.9
+                      ],
+                      "relative_humidity_percent": [
+                        42.6
+                      ],
+                      "precipitation_mm": [
+                        0.0
+                      ],
+                      "cloud_cover_octas": [
+                        0
+                      ],
+                      "wet_bulb_temperature_celsius": [
+                        20.3
+                      ],
+                      "air_quality:idx": [
+                        62.2
+                      ],
+                      "air_quality_pm2p5:idx": [
+                        62.2
+                      ],
+                      "air_quality_pm10:idx": [
+                        23.7
+                      ],
+                      "air_quality_no2:idx": [
+                        3.5
+                      ],
+                      "aqi_us_co": [
+                        1.5
+                      ],
+                      "air_quality_o3:idx": [
+                        32.9
+                      ],
+                      "air_quality_so2:idx": [
+                        4.5
+                      ],
+                      "methane_ppb": [
+                        null
+                      ],
+                      "co2_ppm": [
+                        null
+                      ]
+                    },
+                    "solar_irradiance": {
+                      "clear_sky": {
+                        "ghi": 908.63,
+                        "dni": 791.83,
+                        "dhi": 157.67
+                      },
+                      "description": "These modeled clear-sky irradiance estimates in W/mÂ² describe the specific location at 2024-07-15 14:00. GHI is global horizontal irradiance, DNI is direct normal irradiance, and DHI is diffuse horizontal irradiance."
+                    }
+                  }
+                ]
+              }
+            },
+            "activity_id": "48203131-b96f-414c-bc42-cd42da3ddb66",
+            "evidence": [
+              {
+                "source": "tOS-Enterprise-API /env_params",
+                "activity_id": "48203131-b96f-414c-bc42-cd42da3ddb66",
+                "catalog_version": "v2",
+                "aoi": {
+                  "latitude": 34.0522,
+                  "longitude": -118.2437
+                },
+                "date_window": "2024-07-15 14:00",
+                "detail": {
+                  "fields": [
+                    "apparent_temperature_celsius",
+                    "relative_humidity_percent",
+                    "precipitation_mm",
+                    "cloud_cover_octas",
+                    "wet_bulb_temperature_celsius",
+                    "elevation_meters",
+                    "aqi_us"
+                  ]
+                }
+              }
+            ],
+            "warnings": []
+          },
+          "trace": {
+            "trace_id": "6bc85c6fb7a8",
+            "tool": "env_params",
+            "plan_type": "premium",
+            "decision": "allow",
+            "status": "ok",
+            "latency_ms": 6628,
+            "cost_credits": 2900
+          }
+        }
+      }
+    }
+  }
+}

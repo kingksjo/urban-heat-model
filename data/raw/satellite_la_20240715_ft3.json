@@ -1,0 +1,141 @@
+{
+  "request": {
+    "sat": {
+      "latitude": 34.0522,
+      "longitude": -118.2437
+    },
+    "date_time": {
+      "start_date": "2024-07-15",
+      "filter_type": 3
+    },
+    "granularity": 100
+  },
+  "submit_status": 200,
+  "submit_latency_s": 8.321,
+  "submit_body": {
+    "error": false,
+    "status_code": 200,
+    "message": "Satellite Segmentation Submitted Successfully",
+    "data": {
+      "activity_id": "859f718e-b7b4-41a6-adb9-b93afaf661f8"
+    }
+  },
+  "poll": {
+    "activity_id": "859f718e-b7b4-41a6-adb9-b93afaf661f8",
+    "final_status": "Failed",
+    "attempts": 20,
+    "total_elapsed_s": 123.548,
+    "transitions": [
+      [
+        1,
+        "Processing",
+        6.741
+      ],
+      [
+        2,
+        "Processing",
+        14.113
+      ],
+      [
+        3,
+        "Processing",
+        20.564
+      ],
+      [
+        4,
+        "Processing",
+        28.654
+      ],
+      [
+        5,
+        "Processing",
+        34.696
+      ],
+      [
+        6,
+        "Processing",
+        40.692
+      ],
+      [
+        7,
+        "Processing",
+        46.821
+      ],
+      [
+        8,
+        "Processing",
+        52.719
+      ],
+      [
+        9,
+        "Processing",
+        59.373
+      ],
+      [
+        10,
+        "Processing",
+        65.107
+      ],
+      [
+        11,
+        "Processing",
+        70.682
+      ],
+      [
+        12,
+        "Processing",
+        76.68
+      ],
+      [
+        13,
+        "Processing",
+        82.72
+      ],
+      [
+        14,
+        "Processing",
+        88.66
+      ],
+      [
+        15,
+        "Processing",
+        94.73
+      ],
+      [
+        16,
+        "Processing",
+        100.416
+      ],
+      [
+        17,
+        "Processing",
+        106.171
+      ],
+      [
+        18,
+        "Processing",
+        112.007
+      ],
+      [
+        19,
+        "Processing",
+        117.741
+      ],
+      [
+        20,
+        "Failed",
+        123.548
+      ]
+    ],
+    "final_body": {
+      "error": false,
+      "status_code": 200,
+      "message": "Failed",
+      "data": {
+        "activity_id": "859f718e-b7b4-41a6-adb9-b93afaf661f8",
+        "status": "Failed",
+        "task_id": "4bbe1092-bc9e-46c1-891a-ccb672692e3a"
+      }
+    }
+  }
+}

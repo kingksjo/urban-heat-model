@@ -18,6 +18,7 @@ def run_smoke_post(
     label: str | None = None,
     poll_interval_s: float = 5.0,
     max_attempts: int = 36,
+    print_submit_body: bool = True,
     print_full_result: bool = False,
 ) -> dict[str, Any]:
     """Submit a POST request (no retries), poll if async, save sanitized output, and check credits."""
@@ -35,7 +36,10 @@ def run_smoke_post(
     }
 
     if isinstance(resp.body, dict):
-        print(json.dumps(sanitize_payload(resp.body), indent=2, ensure_ascii=False))
+        if print_submit_body:
+            print(json.dumps(sanitize_payload(resp.body), indent=2, ensure_ascii=False))
+        else:
+            print("Submit body keys:", list(resp.body.keys()))
         data_obj = resp.body.get("data") if isinstance(resp.body.get("data"), dict) else {}
         activity_id = resp.body.get("activity_id") or data_obj.get("activity_id")
         status = str(resp.body.get("status") or data_obj.get("status") or "").lower()

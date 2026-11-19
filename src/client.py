@@ -71,20 +71,27 @@ class FortyGuardClient:
     ) -> ApiResponse:
         """Send a REST request and return status, latency, and parsed payload.
 
-        `retries` re-sends only on gateway errors (502/503/504). Keep it at 0 for
-        credit-consuming POSTs (heatmap, satellite, ...) to avoid double submission;
-        use it for read-only calls (status polling, usage check).
+        `retries` re-sends on gateway errors (502/503/504) or transient
+        timeout/connection failures. Keep it at 0 for credit-consuming POSTs
+        (heatmap, satellite, ...) to avoid double submission; use it for
+        read-only calls (status polling, usage check).
         """
         url = f"{self.base_url}/{path.lstrip('/')}"
         for attempt in range(retries + 1):
             start = time.perf_counter()
-            resp = self._session.request(
-                method=method.upper(),
-                url=url,
-                json=json_body,
-                params=params,
-                timeout=timeout or self.timeout,
-            )
+            try:
+                resp = self._session.request(
+                    method=method.upper(),
+                    url=url,
+                    json=json_body,
+                    params=params,
+                    timeout=timeout or self.timeout,
+                )
+            except (requests.exceptions.Timeout, requests.exceptions.ConnectionError):
+                if attempt == retries:
+                    raise
+                time.sleep(backoff_s * (attempt + 1))
+                continue
             latency_s = round(time.perf_counter() - start, 3)
             if resp.status_code not in (502, 503, 504) or attempt == retries:
                 break

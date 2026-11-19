@@ -33,6 +33,10 @@
 
 **F-01 addendum 2 (2026-11-18 ~06:20 UTC):** Even after Test 11 (`POST /v1/env_params`) succeeded (`10.182s` just to return `activity_id`), Test 12 (`POST /v1/heatmap`) hit `504 text/plain "upstream request timeout"` at `17.755s`. The ~15–18s edge gateway timeout appears tight relative to slow submit handlers (10s+) and intermittent backend stalls.
 
+**F-01 addendum 4 (2026-11-18 ~07:10–07:13 UTC, controlled A/B):** the same free request sent through plain `curl` and our Python client succeeded and failed at random (2 of 9 calls returned `200`, the rest `504` or timeout), with both clients failing in the same rounds and the same request succeeding on one client then failing on the other. This rules out a client-side cause (see Test 18). Backend success rate was roughly 20–30% in this window.
+
+**F-01 addendum 3 (2026-11-18 ~06:42–06:46 UTC):** Test 15 (`POST /v1/satellite`) and 4 consecutive retried `POST /v1/system/fetch-api-key-usage` calls (with 5s/10s/15s backoff) all returned `504 text/plain "upstream request timeout"`, and MCP (`tos-mcp.app.fortyguard.com`) hung at the TLS handshake (`ReadTimeoutError` at `25s`). Across sessions, availability has alternated between healthy responses (`06:10–06:26 UTC`) and multi-minute outages across REST, MCP, and Docs (`22:11–22:19 UTC`, `05:31 UTC` partial, `06:42–06:46 UTC`).
+
 ### F-02: Credential handling inconsistency & raw key echo on `POST /v1/system/fetch-api-key-usage`
 | Field | Details |
 |---|---|
@@ -98,3 +102,49 @@
 | **Impact** | **Positive for AI agents:** prevents context-window overflow and gives agents transparent credit/latency telemetry and explicit units (`celsius`). **Tradeoff for ML pipelines:** REST `GET /v1/status/{id}` must still be used to extract tile-level GeoJSON geometries and temperatures. |
 | **Severity** | **Low** (Strength / Design Tradeoff) |
 | **Recommendation** | Keep bounded summaries as the default in MCP `heatmap_read`, and document explicitly that REST is required when callers need full per-tile GeoJSON geometries. |
+
+### F-08: Async `Failed` jobs return `error: false`, `status_code: 200`, and no diagnostic reason
+| Field | Details |
+|---|---|
+| **Finding** | After `POST /v1/satellite` accepted our Downtown LA payload (`200`), `GET /v1/status/{activity_id}` reported `Processing` for ~2 minutes before transitioning to `Failed` (`124.599s` with `filter_type: 1`; `123.548s` with `filter_type: 3`) with `{"error": false, "status_code": 200, "message": "Failed", "data": {"activity_id": "...", "status": "Failed", "task_id": "..."}}` and **no reason or error detail** (0 credits charged). |
+| **Evidence Status** | **Observed** |
+| **Category** | Error Handling / Async Workflow / Developer Experience |
+| **Evidence** | Tests 19 & 21 in [api-test-log.md](file:///C:/Users/Kamiye/Desktop/urban-heat%20model/notes/api-test-log.md); [satellite_la_20240715_ft3.json](file:///C:/Users/Kamiye/Desktop/urban-heat%20model/data/raw/satellite_la_20240715_ft3.json). |
+| **Impact** | Developers cannot tell whether a job failed due to missing imagery for the requested date/filter, an invalid parameter combination, or an internal worker failure/timeout—making debugging and automated fallback difficult. Also confirms REST `satellite` is async (contrasting with MCP's direct `satellite` tool). |
+| **Severity** | **High** |
+| **Recommendation** | Populate a structured `error_code` and human-readable `failure_reason` (e.g., `"no_imagery_for_date"` vs. `"worker_timeout"`) inside `data` when `status` is `"Failed"`. |
+
+### F-09: Contradictions and typos across the live REST documentation and MCP schemas
+| Field | Details |
+|---|---|
+| **Finding** | Direct inspection of the live `docs-api.fortyguard.com` bundle revealed multiple internal inconsistencies and conflicts with MCP tool schemas: (1) `heat_intelligence` docs describe `temperature` as **Fahrenheit** (`82.4`), while the immediately following `date` description says *"Date for the supplied **Celsius** temperature"*; (2) `streetview` REST docs define `vertical_angle` as tilt (up/down) and `horizontal_angle` as pan (0–360), whereas the live MCP `streetview` schema defines `vertical_angle` as heading and `horizontal_angle` as pitch (`÷ 100`); (3) `limitations` requires `polygon_aoi` to be a GeoJSON `FeatureCollection`, while `create-heatmap` examples pass a bare `Polygon`; (4) `satellite` docs document a misspelled `orignal_image` field; (5) `limitations` has a truncated sentence (*"analysis must be a subset of ."*); and (6) `routing` documents structured `data.error.{code, message, retryable}` on `Failed`, whereas `satellite` omitted any `error` object when it failed. |
+| **Evidence Status** | **Documented** (extracted directly from `docs-api.fortyguard.com` JS bundle `main.f63c9170caed3b34.js`) & **Observed** (vs. [mcp_tools.json](file:///C:/Users/Kamiye/Desktop/urban-heat%20model/data/raw/mcp_tools.json) and Test 19/21) |
+| **Category** | Documentation / Schema Consistency / Developer Experience |
+| **Evidence** | Live docs pages `/docs/heat-intelligence`, `/docs/street-view-segmentation`, `/docs/satellite-view-segmentation`, `/docs/create-heatmap`, `/docs/routing`, `/docs/limitations`; [mcp_tools.json](file:///C:/Users/Kamiye/Desktop/urban-heat%20model/data/raw/mcp_tools.json). |
+| **Impact** | Causes integration bugs when developers switch between REST and MCP (especially `streetview` heading/pitch and `heat_intelligence` °F/°C) or rely on `Failed` payloads having a consistent `data.error` object. |
+| **Severity** | **High** (for `streetview` angle inversion and `heat_intelligence` unit contradiction) / **Medium** (for `FeatureCollection` vs `Polygon` and doc typos) |
+| **Recommendation** | Reconcile REST docs and MCP descriptions from a single source of truth (OpenAPI + shared schema), fix the `Celsius`/`Fahrenheit` typo in `heat_intelligence`, unify `data.error` across all async `Failed` responses, and expose a working `/openapi.json` endpoint. |
+
+### F-10: `satellite` (`granularity=20`) returns `80×80` cropped imagery with missing capture dates and non-urban `others`/`sand`/`sea` labels
+| Field | Details |
+|---|---|
+| **Finding** | When `POST /v1/satellite` succeeded with `granularity=20` at Downtown LA (`34.0522, -118.2437`), it returned an `80×80` `Google Maps Static API` crop showing a single white rooftop/pavement edge (with a cropped Google watermark), `image_year: null`, `image_date: null`, `imagery_date_status: "unavailable"`, and segments `{"earth, ground": 8.61, "sea": 0.83, "sand": 13.97, "others": 76.59}` — with no `building`, `road`, or `vegetation` classes detected. |
+| **Evidence Status** | **Observed** |
+| **Category** | Data Quality / ML Feasibility / Computer Vision |
+| **Evidence** | Test 23 in [api-test-log.md](file:///C:/Users/Kamiye/Desktop/urban-heat%20model/notes/api-test-log.md); [satellite_la_20240715_g20.json](file:///C:/Users/Kamiye/Desktop/urban-heat%20model/data/raw/satellite_la_20240715_g20.json) and decoded `80×80` PNGs. |
+| **Impact** | `granularity=20` is unsuitable for urban land-cover ML features because 76.6% is uninformative `others`, concrete/shadows are mislabeled as `sand`/`sea`, and imagery capture date is unavailable (preventing temporal alignment with `2024-07-15` heat data). |
+| **Severity** | **High** (for ML usability at `20m` and metadata transparency) |
+| **Recommendation** | Test whether `granularity=80` produces meaningful urban classes (`building`, `road`, `vegetation`) at `350×350`; otherwise trigger Plan Section 4.7 fallback. For the product, expose urban-tuned segmentation classes and clearly document the `20m` crop's class limitations. |
+
+**F-10 addendum (Test 24, `granularity=80`):** Switching the exact same Downtown LA coordinate to `granularity=80` succeeded in `9.771s` (`350×350` image) and eliminated the `20m` misclassification—returning `road, route: 63.04%`, `building: 22.22%`, `earth, ground: 6.33%`, `tree: 6.22%`, `grass: 2.19%`, and `others: 0.01%` (though `image_year`/`image_date` remained `null`). `granularity=80` is therefore usable for ML features, while `granularity=20` is unsuitable for urban land-cover classification.
+
+### F-11: Unhandled `500` on malformed date/enum input & inconsistent `400`/`422`/`500` validation envelopes
+| Field | Details |
+|---|---|
+| **Finding** | In Phase 2.5 negative testing, missing fields and out-of-range coordinates on `POST /v1/env_params` returned `422` with `detail[]`, unclosed polygons on `POST /v1/heatmap` returned `400` with `field`, and passing `start_date: "2024-99-99"` + `filter_type: 99` to `POST /v1/env_params` caused an **`HTTP 500`** (`"Something went wrong on our side..."`) omitting `status_code` and `field`. |
+| **Evidence Status** | **Observed** |
+| **Category** | Validation / Error Handling / API Consistency |
+| **Evidence** | Test 25 in [api-test-log.md](file:///C:/Users/Kamiye/Desktop/urban-heat%20model/notes/api-test-log.md); [negative_validation_tests.json](file:///C:/Users/Kamiye/Desktop/urban-heat%20model/data/raw/negative_validation_tests.json) vs. `/docs/limitations` ("returns `400 Bad Request`"). |
+| **Impact** | Clients cannot distinguish a real backend outage (`500`) from their own bad date/enum input, and error-parsing code has to handle three different validation/error shapes (`422` Pydantic, `400` custom, `500` generic). |
+| **Severity** | **Medium** |
+| **Recommendation** | Validate `date_time` calendar validity and `filter_type` enums at request parsing so malformed dates/enums return `400`/`422` with `field`, and standardize one consistent error envelope across all `4xx`/`5xx` responses. |
